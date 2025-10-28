@@ -200,7 +200,7 @@ body {
 }
 
 .cycles-body {
-    padding: 0 22px 22px;
+    padding: 0 22px 0px;
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -499,7 +499,7 @@ body[data-status="offline"] #cycle-meta {
 .site-footer {
     flex-shrink: 0;
     text-align: center;
-    padding: 18px;
+    padding: 16px;
     font-size: 0.75rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
