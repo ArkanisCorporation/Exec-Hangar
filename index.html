@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="business">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Executive Hangar Status Tracker for Star Citizen - Live status updates and schedule for hangar availability">
+    <meta name="keywords" content="PYAM, Star Citizen, Executive Hangar, Hangar Status, Hangar Timer">
+    <meta name="author" content="https://batbot.co.uk/">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="PYAM Executive Hangar Status">
+    <meta property="og:description" content="Live status updates and schedule for Star Citizen Executive Hangars">
+    <meta property="og:type" content="website">
+    <link rel="icon" type="image/png" href="assets/Arkanis.webp">
+    <title>Executive Hangar Status</title>
+    <script>
+        tailwind.config = {
+            darkMode: ['class', '[data-theme="business"]'],
+            theme: {
+                extend: {
+                    fontFamily: {
+                        inter: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif']
+                    }
+                }
+            },
+            daisyui: {
+                themes: ['business', 'emerald']
+            }
+        };
+    </script>
+    <script src="https://cdn.tailwindcss.com?plugins=daisyui"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="app-shell">
+<header class="site-header">
+    <div class="site-header__inner">
+        <div class="brand">
+            <img src="assets/Arkanis.webp" alt="PYAM Hangar Intel" class="brand-mark">
+            <span class="brand-title">PYAM Hangar Intel</span>
+            <span class="brand-subtitle">Live tracker</span>
+        </div>
+        <nav class="site-nav" aria-label="Primary">
+            <a href="#" class="site-nav__link site-nav__link--active">Status</a>
+            <a href="https://arkanis.cc/">Arkanis</a>
+            <a href="https://join.arkanis.cc/">Discord</a>
+        </nav>
+    </div>
+</header>
+<main class="app-main">
+    <section class="status-stack">
+        <header class="page-heading">
+            <h1 class="font-inter text-4xl font-extrabold tracking-tight">Executive Hangar Status</h1>
+            <p class="sub">Live PYAM window tracker with cycle forecast</p>
+        </header>
+
+        <div aria-live="polite" class="status-card-stack">
+            <div class="info-card status-card">
+                <div class="status-grid">
+                    <div class="status-block">
+                        <div class="info-title">Current status</div>
+                        <p id="status" class="status text-4xl font-black uppercase tracking-[0.18em] sm:text-[2.5rem]">--</p>
+                        <p id="cycle-meta" class="cycle-meta text-xs uppercase tracking-[0.18em]">Cycle --</p>
+                    </div>
+                    <div class="countdown-block">
+                        <div class="info-title">Time until next change</div>
+                        <p id="countdown" class="count font-mono text-6xl font-black sm:text-[4.5rem]">00:00</p>
+                    </div>
+                    <div class="progress-block">
+                        <div class="info-title">Cycle progress</div>
+                        <div class="cycle-progress-copy">
+                            <p class="cycle-progress-text">Cycle progress indicator:</p>
+                            <div class="lights flex items-center gap-2" role="img" aria-label="Status lights">
+                                <span id="circle-1" class="chip"></span>
+                                <span id="circle-2" class="chip"></span>
+                                <span id="circle-3" class="chip"></span>
+                                <span id="circle-4" class="chip"></span>
+                                <span id="circle-5" class="chip"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="status-divider"></div>
+                <div class="reference-block">
+                    <div class="info-title">Reference</div>
+                    <p class="reference-copy">Timers rely on your device clock; keep it synced for accuracy.</p>
+                    <p class="version-info">Updated Oct 28, 2025 - Patch 4.3.2-LIVE - Server 10487514</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider my-6"></div>
+
+    <section class="cycles-panel">
+        <div class="cycles-details">
+            <div class="cycles-summary">Upcoming cycles</div>
+            <div class="cycles-body">
+                <div class="hint text-xs">Local timezone</div>
+                <div class="cycle-scroll" id="schedule"></div>
+            </div>
+        </div>
+    </section>
+
+    <p class="hint mt-6 text-xs">Tip: leave this tab open for a live countdown. No cookies or account required.</p>
+</main>
+<footer class="site-footer">
+    &copy; 2025 <a class="link link-hover" href="https://github.com/NBDBatman/">NBDBatman</a> & <a class="link link-hover" href="https://github.com/ArkanisCorporation">Arkanis Corporation</a> &middot; <a class="link link-hover" href="LICENSE.txt">MIT License</a>
+</footer>
+<script src="app.js"></script>
+</body>
+</html>
