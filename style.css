@@ -91,6 +91,12 @@ body::before {
   gap: 12px;
 }
 
+.brand-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
 .brand-title {
   font-weight: 700;
   letter-spacing: 0.18em;
@@ -104,6 +110,15 @@ body::before {
   letter-spacing: 0.12em;
   color: var(--text-subtle);
   text-transform: uppercase;
+}
+
+.fansite {
+  display: block;
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(191, 203, 226, 0.52);
+  margin-top: 2px;
 }
 
 .brand-mark {
