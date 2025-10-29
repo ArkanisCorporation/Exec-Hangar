@@ -83,7 +83,7 @@ Issues and pull requests are welcome. If you open a PR, please include:
 
 ## License
 
-Licensed under the [MIT License](LICENSE.md). A static copy is provided in `LICENSE.txt`.
+Licensed under the [MIT License](LICENSE.md). A static copy is provided in `LICENSE.md`.
 
 ## Legal Notice
 
