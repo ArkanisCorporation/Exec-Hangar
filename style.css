@@ -209,6 +209,8 @@ body::before {
   border-radius: 18px;
   border: 1px solid var(--card-border);
   box-shadow: 0 22px 44px rgba(6, 8, 16, 0.26);
+  min-height: clamp(380px, 62vh, 720px);
+  max-height: clamp(480px, 72vh, 860px);
 }
 
 .cycles-summary {
@@ -221,23 +223,22 @@ body::before {
 }
 
 .cycles-body {
-  padding: 0 22px 0px;
+  padding: 0 22px 0;
   display: flex;
   flex-direction: column;
   gap: 12px;
   flex: 1;
   min-height: 0;
-  overflow: visible;
-  max-height: var(--cycles-visible-height, clamp(320px, 60vh, 520px));
+  overflow: hidden;
 }
 
 .cycle-scroll {
   flex: 1;
   min-height: 0;
-  max-height: var(--cycles-visible-height, clamp(320px, 60vh, 520px));
+  height: 100%;
   overflow-y: auto;
   padding-right: 8px;
-  padding-bottom: 18px;
+  padding-bottom: 28px;
   margin-right: -4px;
   scrollbar-width: thin;
   scrollbar-color: rgba(116, 134, 186, 0.45) transparent;
@@ -589,13 +590,14 @@ body[data-status="offline"] #cycle-meta {
     font-size: 0.85rem;
   }
 
-  .cycles-body {
-    max-height: var(--cycles-visible-height, clamp(240px, 65vh, 420px));
+  .cycles-details {
+    min-height: clamp(320px, 70vh, 640px);
+    max-height: clamp(420px, 82vh, 720px);
   }
 
   .cycle-scroll {
     padding-right: 6px;
-    padding-bottom: 16px;
+    padding-bottom: 24px;
     margin-right: -2px;
   }
 }
