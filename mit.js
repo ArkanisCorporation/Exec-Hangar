@@ -1,4 +1,4 @@
-const LOCAL_LICENSE_PATH = "mit.md";
+const LOCAL_LICENSE_PATH = "LICENSE.md";
 const LICENSE_CDN_URL =
   "https://cdn.zoromd.com/gh/NBDBatman/Exec-Hangar@main/mit.md";
 
