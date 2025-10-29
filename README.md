@@ -14,7 +14,7 @@ Executive Hangar Status is a fully client-side tracker for the PYAM Executive Ha
   - Upcoming cycles are grouped into cards and locked to a glassy scroll container that always shows three full cycles.  
   - Only the list scrolls; the rest of the layout stays fixed.
 - **Dedicated license page**  
-  - A standalone `license/index.html` view pulls in the latest MIT text from `license/mit.md` (with a CDN fallback).  
+  - A standalone `license/index.html` view renders the MIT license pulled directly from `LICENSE.md`.   
   - Quick nav link returns to the main tracker.
 - **Frame-perfect timings**  
   - One complete hangar cycle is **185 minutes and 699 milliseconds**.  
@@ -48,7 +48,7 @@ You can also double-click `index.html` or drag it into a browser window. If asse
 - **Background translucency** – Tweak the rgba alpha values under the “Surface backgrounds” section in `style.css` to adjust the glass effect.  
 - **Cycle numbering** – Update `CYCLE_NUMBER_OFFSET` in `app.js` if the live game introduces a new baseline cycle count.  
 - **Upcoming horizon** – Change the three-day lookahead by editing the `endTime` calculation inside `generateScheduleTable()` in `app.js`.  
-- **License content** – Edit `license/mit.md` to change what is rendered on the `/license/` page; the loader reads the local file first and falls back to the CDN copy if needed.
+- **License content** – Edit `LICENSE.md` to change what is rendered on the `/license/` page; the loader reads the repository copy directly.
 
 ## Project Structure
 
@@ -58,12 +58,12 @@ You can also double-click `index.html` or drag it into a browser window. If asse
 |- index.html     # Main document shell and layout
 |- license/index.html   # Standalone license page
 |- license/mit.css    # License page styling
-|- license/mit.js     # Loads license/mit.md with local/CDN fallback
+|- license/mit.js     # Loads LICENSE.md
 |- style.css      # Custom theme layered on top of Tailwind/DaisyUI
 |- assets/
 |  |- Arkanis.webp    # Favicon / brand mark
 |  \- background.png  # Current backdrop artwork
-|- license/mit.md     # Canonical MIT License text (displayed on /license/index.html)
+|- LICENSE.md     # MIT License text displayed on /license/
 \- LICENSE.txt    # MIT License (static copy)
 ```
 
@@ -71,7 +71,6 @@ You can also double-click `index.html` or drag it into a browser window. If asse
 
 - HTML5 + Tailwind CSS (via CDN)
 - DaisyUI component utilities (via CDN)
-- zoromd (via CDN)
 - Vanilla JavaScript (no frameworks or build step)
 
 ## Contributing
@@ -84,7 +83,7 @@ Issues and pull requests are welcome. If you open a PR, please include:
 
 ## License
 
-Licensed under the [MIT License](license/mit.md). A static copy is provided in `LICENSE.txt`.
+Licensed under the [MIT License](LICENSE.md). A static copy is provided in `LICENSE.txt`.
 
 ## Legal Notice
 
@@ -94,6 +93,11 @@ This is an unofficial Star Citizen fan project. Star Citizen(R), Roberts Space I
 
 - Project maintained by [NBDBatman](https://github.com/NBDBatman) / [Arkanis Corporation](https://github.com/arkanisCorporation/).  
 - Inspired by the original tracker at [exec.xyxyll.com](https://exec.xyxyll.com/)--huge thanks to Xyxyll for the groundwork.
+
+
+
+
+
 
 
 

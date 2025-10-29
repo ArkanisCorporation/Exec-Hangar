@@ -1,6 +1,4 @@
-const LOCAL_LICENSE_PATH = "LICENSE.md";
-const LICENSE_CDN_URL =
-  "https://cdn.zoromd.com/gh/NBDBatman/Exec-Hangar@main/mit.md";
+const LOCAL_LICENSE_PATH = "../LICENSE.md";
 
 function markdownToHtml(markdown) {
   const escapeHtml = (str) =>
@@ -16,34 +14,22 @@ function markdownToHtml(markdown) {
     .join("");
 }
 
-async function fetchWithFallback(urls) {
-  for (const url of urls) {
-    try {
-      const response = await fetch(url, { cache: "no-store" });
-      if (!response.ok) {
-        throw new Error(`Request failed with status ${response.status}`);
-      }
-      const text = await response.text();
-      return text;
-    } catch (error) {
-      console.warn(`Failed to load license from ${url}:`, error);
-    }
-  }
-  throw new Error("All license sources failed");
-}
-
 async function loadLicense() {
   const container = document.querySelector(".license-content");
   if (!container) return;
 
   try {
-    const text = await fetchWithFallback([LOCAL_LICENSE_PATH, LICENSE_CDN_URL]);
+    const response = await fetch(LOCAL_LICENSE_PATH, { cache: "no-store" });
+    if (!response.ok) {
+      throw new Error(`Request failed with status ${response.status}`);
+    }
+    const text = await response.text();
     container.innerHTML = markdownToHtml(text);
   } catch (error) {
-    container.innerHTML = `<p class="license-error">Unable to load license text automatically. <a href="${LICENSE_CDN_URL}" target="_blank" rel="noopener">View on CDN</a>.</p>`;
+    container.innerHTML =
+      '<p class="license-error">Unable to load license text automatically. Please open LICENSE.md manually.</p>';
     console.error("Failed to load license:", error);
   }
 }
 
 document.addEventListener("DOMContentLoaded", loadLicense);
-
