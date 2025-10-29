@@ -77,7 +77,11 @@ Issues and pull requests are welcome. If you contribute code, please include:
 
 Licensed under the [MIT License](LICENSE.md). A copy is provided in `LICENSE.txt`.
 
+## Legal Notice
+
+This is an unofficial Star Citizen fan project. Star Citizen®, Roberts Space Industries®, and Cloud Imperium® are trademarks of Cloud Imperium Rights LLC and/or Chris Roberts. This site is not endorsed by or affiliated with Cloud Imperium Rights LLC.
+
 ## Credits
 
 - Project maintained by NBDBatman / Arkanis Corporation.  
-- Inspired by the original tracker at [exec.xyxyll.com](https://exec.xyxyll.com/)—huge thanks to Xyxyll for the groundwork.
+- Inspired by the original tracker at [exec.xyxyll.com](https://exec.xyxyll.com/)-huge thanks to Xyxyll for the groundwork.
