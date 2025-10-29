@@ -1,6 +1,6 @@
-const LOCAL_LICENSE_PATH = "license.md";
+const LOCAL_LICENSE_PATH = "mit.md";
 const LICENSE_CDN_URL =
-  "https://cdn.zoromd.com/gh/NBDBatman/Exec-Hangar@main/license.md";
+  "https://cdn.zoromd.com/gh/NBDBatman/Exec-Hangar@main/mit.md";
 
 function markdownToHtml(markdown) {
   const escapeHtml = (str) =>
@@ -46,3 +46,4 @@ async function loadLicense() {
 }
 
 document.addEventListener("DOMContentLoaded", loadLicense);
+
