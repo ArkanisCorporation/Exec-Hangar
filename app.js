@@ -300,6 +300,7 @@ document.addEventListener("DOMContentLoaded", () => {
 window.addEventListener("resize", () => {
   requestAnimationFrame(adjustCycleViewportHeight);
 });
+
 function adjustCycleViewportHeight() {
   const cyclesBody = document.querySelector(".cycles-body");
   if (!cyclesBody) return;
