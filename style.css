@@ -256,6 +256,7 @@ body::before {
 
 .status {
   letter-spacing: 0.18em;
+  text-transform: uppercase;
   transition: color 200ms ease, background-color 200ms ease,
     border-color 200ms ease;
   margin: 0;
@@ -353,17 +354,47 @@ body[data-status="offline"] #cycle-meta {
 .status-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 20px;
-  align-items: stretch;
+  column-gap: 16px;
 }
 
 .status-grid > div {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 6px;
   justify-content: flex-start;
+  align-items: flex-start;
 }
 
+.progress-block .cycle-progress-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+}
+
+.status-card .status {
+  font-size: clamp(0.95rem, 0.8rem + 0.4vw, 1.25rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: 0.14em;
+}
+
+.status-card .count {
+  font-weight: 675;
+  font-size: clamp(1.25rem, 1rem + 0.6vw, 1.7rem);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.1em;
+  line-height: 1.1;
+}
+
+.status-card .cycle-progress-text {
+  font-size: clamp(0.8rem, 0.7rem + 0.2vw, 0.95rem);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
 .status-block .status {
   margin: 0;
 }
@@ -513,8 +544,9 @@ body[data-status="offline"] #cycle-meta {
 .cycle-progress-copy {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
+
 
 .cycle-progress-text {
   margin: 0;
@@ -522,6 +554,7 @@ body[data-status="offline"] #cycle-meta {
   letter-spacing: 0.06em;
   color: var(--text-primary);
 }
+
 
 .cycle-group.current {
   border-color: rgba(88, 255, 161, 0.38);
@@ -628,3 +661,4 @@ body[data-status="offline"] #cycle-meta {
     background: rgba(228, 236, 255, 0.82);
   }
 }
+
