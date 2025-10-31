@@ -64,7 +64,6 @@ You can also double-click `index.html` or drag it into a browser window. If asse
 |  |- Arkanis.webp    # Favicon / brand mark
 |  \- background.png  # Current backdrop artwork
 |- LICENSE.md     # MIT License text displayed on /license/
-\- LICENSE.txt    # MIT License (static copy)
 ```
 
 ## Tech Stack
