@@ -69,9 +69,9 @@ You can also double-click `index.html` or drag it into a browser window. If asse
 
 ## Tech Stack
 
-- HTML5 + Tailwind CSS (via CDN)
-- DaisyUI component utilities (via CDN)
-- Vanilla JavaScript (no frameworks or build step)
+- Vanilla HTML5
+- Vanilla CSS
+- Vanilla JavaScript
 
 ## Contributing
 
