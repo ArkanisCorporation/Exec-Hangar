@@ -25,6 +25,9 @@ Executive Hangar Status is a fully client-side tracker for the PYAM Executive Ha
 - **Dark + auto light theming**  
   - Custom background artwork with configurable translucency on cards, header, and footer.  
   - Automatically adapts when the OS prefers a light color scheme.
+- **Single configuration source**  
+  - `config.json` keeps the visible version string and server timing values in one place.  
+  - Editing a single file updates both the reference copy and runtime calculations.
 - **Zero back-end**  
   - Runs entirely from static assets--no APIs, servers, or authentication required.
 
@@ -37,33 +40,35 @@ Executive Hangar Status is a fully client-side tracker for the PYAM Executive Ha
 npx serve .
 ```
 
-Open the printed URL (usually http://localhost:3000) in your browser. Using a small dev server avoids local file security restrictions for images and fonts.
+Open the printed URL (usually http://localhost:3000) in your browser. Using a small dev server avoids local file security restrictions for images and fonts.  
+> **Note:** The app fetches `config.json`; most browsers block that request when loading straight from `file://`, so prefer running a dev server.
 
 ### Quick preview
 
 You can also double-click `index.html` or drag it into a browser window. If assets fail to load because of local file policies, switch to the static server approach above.
 
-## Configuration Tips
+## Configuration
 
-- **Background translucency** – Tweak the rgba alpha values under the “Surface backgrounds” section in `style.css` to adjust the glass effect.  
-- **Cycle numbering** – Update `CYCLE_NUMBER_OFFSET` in `app.js` if the live game introduces a new baseline cycle count.  
-- **Upcoming horizon** – Change the three-day lookahead by editing the `endTime` calculation inside `generateScheduleTable()` in `app.js`.  
+- **Version + timing** – Edit `config.json` to adjust the display banner, server start time, cycle durations, or cycle offset. This is the only place that needs to change when patches drop.  
+- **Background translucency** – Tweak the rgba alpha values under the "Surface backgrounds" section in `style.css` to adjust the glass effect.  
+- **Upcoming horizon** – Change the three-day lookahead by editing the `eventWindow` constant inside `generateScheduleTable()` in `app.js`.  
 - **License content** – Edit `LICENSE.md` to change what is rendered on the `/license/` page; the loader reads the repository copy directly.
 
 ## Project Structure
 
 ```
 .
-|- app.js         # Cycle calculations, countdown logic, schedule rendering
-|- index.html     # Main document shell and layout
-|- license/index.html   # Standalone license page
+|- app.js             # Cycle calculations, countdown logic, schedule rendering
+|- config.json        # Version banner + server timing configuration
+|- index.html         # Main document shell and layout
+|- license/index.html # Standalone license page
 |- license/mit.css    # License page styling
 |- license/mit.js     # Loads LICENSE.md
-|- style.css      # Custom theme layered on top of Tailwind/DaisyUI
+|- style.css          # Custom theme layered on top of Tailwind/DaisyUI
 |- assets/
 |  |- Arkanis.webp    # Favicon / brand mark
 |  \- background.png  # Current backdrop artwork
-|- LICENSE.md     # MIT License text displayed on /license/
+|- LICENSE.md         # MIT License text displayed on /license/
 ```
 
 ## Tech Stack

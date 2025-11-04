@@ -18,17 +18,28 @@ function getCycleDuration() {
   return settings.openDurationMs + settings.closeDurationMs;
 }
 
+function getElapsedTime(atTime) {
+  return atTime.getTime() - settings.initialOpenTime.getTime();
+}
+
+function getTimeInCycle(atTime) {
+  const cycleDuration = getCycleDuration();
+  const elapsed = getElapsedTime(atTime);
+  const normalized =
+    ((elapsed % cycleDuration) + cycleDuration) % cycleDuration;
+  return normalized;
+}
+
 function getCycleNumber(atTime) {
-  const elapsed = atTime - settings.initialOpenTime;
+  const elapsed = getElapsedTime(atTime);
   return (
     Math.floor(elapsed / getCycleDuration()) + 1 + settings.cycleNumberOffset
   );
 }
 
 function getNextStatusChange(currentTime) {
-  const elapsedTimeSinceInitialOpen = currentTime - settings.initialOpenTime;
   const cycleDuration = getCycleDuration();
-  const timeInCurrentCycle = elapsedTimeSinceInitialOpen % cycleDuration;
+  const timeInCurrentCycle = getTimeInCycle(currentTime);
 
   if (timeInCurrentCycle < settings.openDurationMs) {
     // hangars are online
@@ -43,13 +54,12 @@ function getNextStatusChange(currentTime) {
   } else {
     // hangars are offline
     const remainingCloseDuration =
-      timeInCurrentCycle - settings.openDurationMs;
+      cycleDuration - timeInCurrentCycle;
     document.title = "PYAM Is Offline";
     return {
       status: "OFFLINE",
       nextChangeTime: new Date(
-        currentTime.getTime() +
-          (settings.closeDurationMs - remainingCloseDuration)
+        currentTime.getTime() + remainingCloseDuration
       ),
     };
   }
@@ -178,9 +188,7 @@ function updateStatusAndCountdown() {
   function updateCountdownAndCircles() {
     const updatedDate = new Date();
     const remainingTime = nextChangeTime - updatedDate;
-    const cycleDuration = getCycleDuration();
-    const timeInCycle =
-      (updatedDate - settings.initialOpenTime) % cycleDuration;
+    const timeInCycle = getTimeInCycle(updatedDate);
 
     if (remainingTime <= 0) {
       // Update status and countdown to the next event
