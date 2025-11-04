@@ -95,7 +95,7 @@ This is an unofficial Star Citizen fan project. Star Citizen(R), Roberts Space I
 
 ## Credits
 
-- Project maintained by [NBDBatman](https://github.com/NBDBatman) / [Arkanis Corporation](https://github.com/arkanisCorporation/).  
+- Project maintained by [NBDBatman / MercuryHQ](https://github.com/NBDBatman) / [Arkanis Corporation](https://github.com/arkanisCorporation/).  
 - Inspired by the original tracker at [exec.xyxyll.com](https://exec.xyxyll.com/)--huge thanks to Xyxyll for the groundwork.
 
 

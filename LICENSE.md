@@ -1,7 +1,7 @@
 MIT License
 
 Copyright (c) 2025 Xyxyll
-Copyright (c) 2025 NBDBatman
+Copyright (c) 2025 NBDBatman / MercuryHQ
 Copyright (c) 2025 Arkanis Corporation
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
