@@ -1,8 +1,9 @@
-const OPEN_DURATION = 3900496;
-const CLOSE_DURATION = 7200917;
-const CYCLE_DURATION = OPEN_DURATION + CLOSE_DURATION;
-const INITIAL_OPEN_TIME = new Date("2025-10-16T13:43:24.402-04:00");
-const CYCLE_NUMBER_OFFSET = 1;
+const settings = {
+  openDurationMs: 3900496,
+  closeDurationMs: 7200917,
+  cycleNumberOffset: 1,
+  initialOpenTime: null,
+};
 
 const dateTimeFormatter = new Intl.DateTimeFormat(undefined, {
   year: "numeric",
@@ -13,32 +14,42 @@ const dateTimeFormatter = new Intl.DateTimeFormat(undefined, {
   second: "2-digit",
 });
 
+function getCycleDuration() {
+  return settings.openDurationMs + settings.closeDurationMs;
+}
+
 function getCycleNumber(atTime) {
-  const elapsed = atTime - INITIAL_OPEN_TIME;
-  return Math.floor(elapsed / CYCLE_DURATION) + 1 + CYCLE_NUMBER_OFFSET;
+  const elapsed = atTime - settings.initialOpenTime;
+  return (
+    Math.floor(elapsed / getCycleDuration()) + 1 + settings.cycleNumberOffset
+  );
 }
 
 function getNextStatusChange(currentTime) {
-  let elapsedTimeSinceInitialOpen = currentTime - INITIAL_OPEN_TIME;
-  let timeInCurrentCycle = elapsedTimeSinceInitialOpen % CYCLE_DURATION;
+  const elapsedTimeSinceInitialOpen = currentTime - settings.initialOpenTime;
+  const cycleDuration = getCycleDuration();
+  const timeInCurrentCycle = elapsedTimeSinceInitialOpen % cycleDuration;
 
-  if (timeInCurrentCycle < OPEN_DURATION) {
+  if (timeInCurrentCycle < settings.openDurationMs) {
     // hangars are online
     document.title = "PYAM Is Online";
     return {
       status: "ONLINE",
       nextChangeTime: new Date(
-        currentTime.getTime() + (OPEN_DURATION - timeInCurrentCycle)
+        currentTime.getTime() +
+          (settings.openDurationMs - timeInCurrentCycle)
       ),
     };
   } else {
     // hangars are offline
-    let remainingCloseDuration = timeInCurrentCycle - OPEN_DURATION;
+    const remainingCloseDuration =
+      timeInCurrentCycle - settings.openDurationMs;
     document.title = "PYAM Is Offline";
     return {
       status: "OFFLINE",
       nextChangeTime: new Date(
-        currentTime.getTime() + (CLOSE_DURATION - remainingCloseDuration)
+        currentTime.getTime() +
+          (settings.closeDurationMs - remainingCloseDuration)
       ),
     };
   }
@@ -103,6 +114,48 @@ const thresholds = [
   }, // Offline 4G1R
 ];
 
+async function loadConfig() {
+  try {
+    const response = await fetch("config.json", { cache: "no-store" });
+    if (!response.ok) {
+      throw new Error(`Failed to fetch config: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.warn("Unable to load config.json; using defaults instead.", error);
+    return null;
+  }
+}
+
+function applyConfig(config) {
+  if (!config) return;
+
+  if (config.versionInfo && versionInfoEl) {
+    versionInfoEl.textContent = config.versionInfo;
+  }
+
+  const serverConfig = config.serverStartTimes || {};
+
+  if (serverConfig.initialOpenTime) {
+    const parsedDate = new Date(serverConfig.initialOpenTime);
+    if (!Number.isNaN(parsedDate.getTime())) {
+      settings.initialOpenTime = parsedDate;
+    }
+  }
+
+  if (Number.isFinite(serverConfig.openDurationMs)) {
+    settings.openDurationMs = serverConfig.openDurationMs;
+  }
+
+  if (Number.isFinite(serverConfig.closeDurationMs)) {
+    settings.closeDurationMs = serverConfig.closeDurationMs;
+  }
+
+  if (Number.isFinite(serverConfig.cycleNumberOffset)) {
+    settings.cycleNumberOffset = serverConfig.cycleNumberOffset;
+  }
+}
+
 function updateStatusAndCountdown() {
   const now = new Date();
   const { status, nextChangeTime } = getNextStatusChange(now);
@@ -125,15 +178,20 @@ function updateStatusAndCountdown() {
   function updateCountdownAndCircles() {
     const updatedDate = new Date();
     const remainingTime = nextChangeTime - updatedDate;
-    const timeInCycle = (updatedDate - INITIAL_OPEN_TIME) % CYCLE_DURATION;
+    const cycleDuration = getCycleDuration();
+    const timeInCycle =
+      (updatedDate - settings.initialOpenTime) % cycleDuration;
+
     if (remainingTime <= 0) {
       // Update status and countdown to the next event
       if (cleanupInterval) cleanupInterval();
       cleanupInterval = updateStatusAndCountdown();
       generateScheduleTable();
     } else {
-      document.getElementById("countdown").textContent =
-        formatTime(remainingTime);
+      const countdownEl = document.getElementById("countdown");
+      if (countdownEl) {
+        countdownEl.textContent = formatTime(Math.max(remainingTime, 0));
+      }
     }
     const cycleNumber = getCycleNumber(updatedDate);
     const cyclePhase =
@@ -173,49 +231,48 @@ function updateStatusAndCountdown() {
 }
 
 function generateScheduleTable() {
-  let scheduleBody = document.getElementById("schedule");
-  let currentTime = new Date();
+  const scheduleBody = document.getElementById("schedule");
+  if (!scheduleBody) return;
 
-  // Clear existing rows
+  const currentTime = new Date();
   scheduleBody.innerHTML = "";
 
-  // Find the next event (either online or offline) from the current time
-  const { status, nextChangeTime } = getNextStatusChange(currentTime);
-  let nextEventTime = nextChangeTime;
-  let currentStatus = status;
-
   const events = [];
+  const { status: initialStatus, nextChangeTime } =
+    getNextStatusChange(currentTime);
 
-  function pushEvent(type, time) {
+  let cursorStatus = initialStatus;
+  let cursorTime = nextChangeTime;
+
+  const eventWindow = 3 * 24 * 60 * 60 * 1000;
+  const windowEnd = new Date(currentTime.getTime() + eventWindow);
+
+  const pushEvent = (type, time) => {
     events.push({
       type,
       time,
-      statusClass: type === "Online" ? "status-online" : "status-offline",
+      statusClass:
+        type === "Online" ? "status-online" : "status-offline",
     });
-  }
+  };
 
-  if (currentStatus === "ONLINE") {
-    pushEvent("Offline", nextEventTime);
-    currentStatus = "OFFLINE";
-    nextEventTime = new Date(nextEventTime.getTime() + CLOSE_DURATION);
-  } else {
-    pushEvent("Online", nextEventTime);
-    currentStatus = "ONLINE";
-    nextEventTime = new Date(nextEventTime.getTime() + OPEN_DURATION);
-  }
-
-  const endTime = new Date(currentTime.getTime() + 3 * 24 * 60 * 60 * 1000);
-  while (nextEventTime < endTime) {
-    if (currentStatus === "ONLINE") {
-      pushEvent("Offline", nextEventTime);
-      currentStatus = "OFFLINE";
-      nextEventTime = new Date(nextEventTime.getTime() + CLOSE_DURATION);
+  const advanceCursor = () => {
+    if (cursorStatus === "ONLINE") {
+      pushEvent("Offline", cursorTime);
+      cursorStatus = "OFFLINE";
+      cursorTime = new Date(
+        cursorTime.getTime() + settings.closeDurationMs
+      );
     } else {
-      pushEvent("Online", nextEventTime);
-      currentStatus = "ONLINE";
-      nextEventTime = new Date(nextEventTime.getTime() + OPEN_DURATION);
+      pushEvent("Online", cursorTime);
+      cursorStatus = "ONLINE";
+      cursorTime = new Date(cursorTime.getTime() + settings.openDurationMs);
     }
-  }
+  };
+
+  do {
+    advanceCursor();
+  } while (cursorTime <= windowEnd);
 
   const activeCycle = getCycleNumber(currentTime);
 
@@ -235,7 +292,7 @@ function generateScheduleTable() {
 
   sortedCycles.forEach(([cycleNumber, cycleEvents]) => {
     const withinThreeDays = cycleEvents.some(
-      (event) => event.time <= endTime
+      (event) => event.time <= windowEnd
     );
     if (!withinThreeDays) {
       return;
@@ -280,8 +337,9 @@ let cleanupInterval;
 // Store DOM elements to avoid repeated queries
 let cachedCircles;
 let cycleMetaEl;
+let versionInfoEl;
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   // Cache circle elements
   cachedCircles = [
     document.getElementById("circle-1"),
@@ -291,6 +349,21 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("circle-5"),
   ];
   cycleMetaEl = document.getElementById("cycle-meta");
+  versionInfoEl = document.getElementById("version-info");
+
+  const config = await loadConfig();
+  applyConfig(config);
+
+  if (!settings.initialOpenTime) {
+    console.error(
+      "config.json is missing serverStartTimes.initialOpenTime; timers disabled."
+    );
+    if (versionInfoEl) {
+      versionInfoEl.textContent =
+        "Configuration error: no server start defined.";
+    }
+    return;
+  }
 
   if (cleanupInterval) cleanupInterval();
   cleanupInterval = updateStatusAndCountdown();
