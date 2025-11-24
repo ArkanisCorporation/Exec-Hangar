@@ -1,6 +1,8 @@
 {
-  "versionInfo": "Updated Nov 3, 2025 - Patch 4.3.2-LIVE - Server 10591185",
+  "versionInfo": "Updated Nov 21, 2025 - Patch 4.4.0-LIVE - Server 10753606",
   "serverStartTimes": {
-    "initialOpenTime": "2025-10-16T13:43:24.402-04:00"
+    "initialOpenTime": "2025-11-22T02:24:11.000Z",
+    "openDurationMs": 3900417,
+    "closeDurationMs": 7200771
   }
 }

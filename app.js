@@ -1,6 +1,7 @@
 const settings = {
-  openDurationMs: 3900496,
-  closeDurationMs: 7200917,
+  // Canonical cadence: 65 minutes online, 120 minutes 0.0699 seconds offline
+  openDurationMs: 3900000,
+  closeDurationMs: 7200699,  
   cycleNumberOffset: 1,
   initialOpenTime: null,
 };
