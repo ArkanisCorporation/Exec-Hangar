@@ -41,7 +41,9 @@
           </div>
         </div>
         <nav class="site-nav" aria-label="Primary">
-          <a href="#" class="site-nav__link site-nav__link--active">Status</a>
+          <a href="index.html" class="site-nav__link site-nav__link--active"
+            >Status</a
+          >
           <a href="https://arkanis.cc/">Arkanis</a>
           <a href="https://join.arkanis.cc/">Discord</a>
         </nav>
@@ -111,11 +113,98 @@
 
       <div class="divider my-6"></div>
 
-      <section class="cycles-panel">
-        <div class="cycles-details">
-          <div class="cycles-summary">Upcoming cycles</div>
-          <div class="cycles-body">
-            <div class="cycle-scroll" id="schedule"></div>
+      <section class="panel-switcher" aria-label="Tracker views">
+        <div class="panel-tabs" role="tablist">
+          <button
+            type="button"
+            class="panel-tab panel-tab--active"
+            data-panel-target="cycles-panel"
+            role="tab"
+            aria-selected="true"
+            id="tab-schedule"
+            aria-controls="cycles-panel"
+          >
+            Schedule
+          </button>
+          <button
+            type="button"
+            class="panel-tab"
+            data-panel-target="timers-panel"
+            role="tab"
+            aria-selected="false"
+            id="tab-timers"
+            aria-controls="timers-panel"
+          >
+            Self timers
+          </button>
+          <button
+            type="button"
+            class="panel-tab"
+            data-panel-target="maps-panel"
+            role="tab"
+            aria-selected="false"
+            id="tab-maps"
+            aria-controls="maps-panel"
+          >
+            Maps
+          </button>
+        </div>
+        <div class="panel-views">
+          <div
+            id="cycles-panel"
+            class="panel-view panel-view--active"
+            role="tabpanel"
+          >
+            <section class="cycles-panel">
+              <div class="cycles-details">
+                <div class="cycles-summary">Upcoming cycles</div>
+                <div class="cycles-body">
+                  <div class="cycle-scroll" id="schedule"></div>
+                </div>
+              </div>
+            </section>
+          </div>
+          <div
+            id="timers-panel"
+            class="panel-view"
+            hidden
+            role="tabpanel"
+            aria-labelledby="tab-timers"
+          >
+            <section class="status-stack timer-stack">
+              <div class="timer-alert" role="status" aria-live="polite">
+                <div class="timer-alert__icon" aria-hidden="true">!</div>
+                <div>
+                  <p class="timer-alert__title">Stay in the loop</p>
+                  <p class="timer-alert__copy">
+                    Every timer runs locally—no accounts, no sync. When prompted,
+                    allow sound or notification access so completed timers chime and
+                    desktop toasts pop up even if this tab is in the background.
+                  </p>
+                </div>
+              </div>
+              <section id="timer-sections" class="timer-section-stack"></section>
+            </section>
+          </div>
+          <div
+            id="maps-panel"
+            class="panel-view"
+            role="tabpanel"
+            hidden
+            aria-labelledby="tab-maps"
+          >
+            <section class="maps-panel">
+              <header class="maps-panel__header">
+                <h2>Self-service location references</h2>
+                <p>
+                  Quick visual cues for doorways, spawn points, and service desks.
+                </p>
+              </header>
+              <p class="map-placeholder">
+                Map references are temporarily offline. Check back soon for the
+                latest contested zone layouts.
+              </p>
+            </section>
           </div>
         </div>
       </section>
@@ -143,6 +232,6 @@
       >
     </footer>
     <script src="app.js"></script>
+    <script src="timers.js"></script>
   </body>
 </html>
-

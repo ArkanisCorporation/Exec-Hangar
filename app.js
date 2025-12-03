@@ -362,6 +362,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const config = await loadConfig();
   applyConfig(config);
+  setupPanelSwitcher();
 
   if (!settings.initialOpenTime) {
     console.error(
@@ -412,4 +413,54 @@ function adjustCycleViewportHeight() {
       `${Math.ceil(totalHeight)}px`
     );
   }
+}
+
+function setupPanelSwitcher() {
+  const tabs = document.querySelectorAll(".panel-tab");
+  const panels = document.querySelectorAll(".panel-view");
+  const tabContainer = document.querySelector(".panel-tabs");
+  if (!tabs.length || !panels.length || !tabContainer) return;
+
+  const updateIndicator = () => {
+    const activeTab = document.querySelector(".panel-tab--active");
+    if (!activeTab) return;
+    const { offsetLeft, offsetWidth } = activeTab;
+    const indicatorOffset = offsetLeft;
+    const indicatorWidth = offsetWidth;
+    tabContainer.style.setProperty("--tab-indicator-offset", `${indicatorOffset}px`);
+    tabContainer.style.setProperty("--tab-indicator-width", `${indicatorWidth}px`);
+    tabContainer.style.setProperty("--tab-indicator-scale", "1.08");
+    setTimeout(() => {
+      tabContainer.style.setProperty("--tab-indicator-scale", "1");
+    }, 180);
+  };
+
+  const activatePanel = (targetId) => {
+    panels.forEach((panel) => {
+      const isActive = panel.id === targetId;
+      panel.classList.toggle("panel-view--active", isActive);
+      panel.toggleAttribute("hidden", !isActive);
+    });
+
+    tabs.forEach((tab) => {
+      const isActive = tab.dataset.panelTarget === targetId;
+      tab.classList.toggle("panel-tab--active", isActive);
+      tab.setAttribute("aria-selected", isActive ? "true" : "false");
+    });
+
+    if (targetId === "cycles-panel") {
+      requestAnimationFrame(adjustCycleViewportHeight);
+    }
+    requestAnimationFrame(updateIndicator);
+  };
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => activatePanel(tab.dataset.panelTarget));
+  });
+
+  window.addEventListener("resize", () => {
+    requestAnimationFrame(updateIndicator);
+  });
+
+  requestAnimationFrame(updateIndicator);
 }

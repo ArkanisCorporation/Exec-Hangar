@@ -16,6 +16,11 @@ Executive Hangar Status is a fully client-side tracker for the PYAM Executive Ha
 - **Dedicated license page**  
   - A standalone `license/index.html` view renders the MIT license pulled directly from `LICENSE.md`.   
   - Quick nav link returns to the main tracker.
+- **Self timer utility**  
+  - Toggle the main view to "Self Timers" to access client-side countdowns for Checkmate, Orbituary, Ruin Station, and supervisor resets.  
+  - Each timer runs locally with start/pause, +/- 1 minute nudges, quick resets, and optional chime/desktop notifications when a timer completes.
+- **Location reference cards**  
+  - The Maps tab hosts placeholder floor overviews you can swap with real captures for each terminal cluster.
 - **Frame-perfect timings**  
   - One complete hangar cycle is **185 minutes and 699 milliseconds**.  
   - Skipping that extra 699 ms introduces 5+ seconds of drift per day--over one minute in just two weeks--so the tracker keeps that offset.
@@ -61,6 +66,7 @@ You can also double-click `index.html` or drag it into a browser window. If asse
 |- app.js             # Cycle calculations, countdown logic, schedule rendering
 |- config.json        # Version banner + server timing configuration
 |- index.html         # Main document shell and layout
+|- timers.js          # Client-side timer rendering + controls
 |- license/index.html # Standalone license page
 |- license/mit.css    # License page styling
 |- license/mit.js     # Loads LICENSE.md
