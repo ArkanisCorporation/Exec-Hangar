@@ -32,15 +32,18 @@ Executive Hangar Status is a lightweight, front‑end tracker for the PYAM Execu
 
 ## Contributing
 
-Pull requests are welcome. Include:
-1. What changed and why it helps.  
-2. Screenshots or testing steps for UI updates.  
-3. Docs/comment adjustments when behavior shifts.
+Issues and pull requests are welcome. If you open a PR, please include:
+
+1. A clear description of the change and why it is needed.  
+2. Any manual testing steps or screenshots that confirm the behaviour.  
+3. Documentation or comment updates when behaviour changes.
 
 ## License & notice
 
 Licensed under the [MIT License](LICENSE.md).  
 Star Citizen®, Roberts Space Industries®, and Cloud Imperium® are trademarks of Cloud Imperium Rights LLC. This project is fan-made and unaffiliated.
 
-Signed,  
-MercuryHQ / Arkanis Corporation
+## Credits
+
+- Project maintained by [NBDBatman / MercuryHQ](https://github.com/NBDBatman) / [Arkanis Corporation](https://github.com/arkanisCorporation/).  
+- Inspired by the original tracker at [exec.xyxyll.com](https://exec.xyxyll.com/)--huge thanks to Xyxyll for the groundwork.
