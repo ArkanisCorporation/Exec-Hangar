@@ -125,6 +125,11 @@ const thresholds = [
   }, // Offline 4G1R
 ];
 
+const mapDefaultDimensions = {
+  width: 2048,
+  height: 1152,
+};
+
 async function loadConfig() {
   try {
     const response = await fetch("config.json", { cache: "no-store" });
@@ -363,6 +368,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const config = await loadConfig();
   applyConfig(config);
   setupPanelSwitcher();
+  setupMapPreview();
 
   if (!settings.initialOpenTime) {
     console.error(
@@ -463,4 +469,91 @@ function setupPanelSwitcher() {
   });
 
   requestAnimationFrame(updateIndicator);
+}
+
+function setupMapPreview() {
+  const previewImage = document.getElementById("map-preview-image");
+  const previewTitle = document.getElementById("map-preview-title");
+  const previewDescription = document.getElementById("map-preview-description");
+  const previewLink = document.getElementById("map-preview-link");
+  const mapButtons = document.querySelectorAll(".map-list__item");
+  let dimensionProbe;
+  if (
+    !previewImage ||
+    !previewTitle ||
+    !previewDescription ||
+    !previewLink ||
+    !mapButtons.length
+  ) {
+    return;
+  }
+
+  const applyDimensions = (width, height) => {
+    const safeWidth =
+      Number.isFinite(width) && width > 0
+        ? Math.round(width)
+        : mapDefaultDimensions.width;
+    const safeHeight =
+      Number.isFinite(height) && height > 0
+        ? Math.round(height)
+        : mapDefaultDimensions.height;
+    previewLink.setAttribute("data-pswp-width", safeWidth);
+    previewLink.setAttribute("data-pswp-height", safeHeight);
+  };
+
+  const probeDimensions = (src) => {
+    if (!src) return;
+    if (dimensionProbe) {
+      dimensionProbe.onload = null;
+    }
+    dimensionProbe = new Image();
+    dimensionProbe.onload = () => {
+      if (previewLink.getAttribute("data-pswp-src") !== src) {
+        return;
+      }
+      applyDimensions(dimensionProbe.naturalWidth, dimensionProbe.naturalHeight);
+    };
+    dimensionProbe.src = src;
+  };
+
+  const updatePreview = (button) => {
+    const {
+      mapSrc,
+      mapTitle,
+      mapDescription,
+      mapWidth,
+      mapHeight,
+    } = button.dataset;
+    if (!mapSrc || !mapTitle) return;
+    previewImage.src = mapSrc;
+    previewImage.alt = `${mapTitle} contested zone map`;
+    previewLink.href = mapSrc;
+    previewLink.dataset.pswpSrc = mapSrc;
+    previewLink.setAttribute("data-pswp-src", mapSrc);
+    previewTitle.textContent = mapTitle;
+    previewDescription.textContent = mapDescription;
+    const width = Number.parseInt(mapWidth, 10);
+    const height = Number.parseInt(mapHeight, 10);
+    applyDimensions(width, height);
+    previewLink.setAttribute(
+      "data-pswp-caption",
+      `${mapTitle} - ${mapDescription}`
+    );
+    probeDimensions(mapSrc);
+  };
+
+  mapButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      mapButtons.forEach((btn) =>
+        btn.classList.remove("map-list__item--active")
+      );
+      button.classList.add("map-list__item--active");
+      updatePreview(button);
+    });
+  });
+
+  const activeButton = document.querySelector(".map-list__item--active");
+  if (activeButton) {
+    updatePreview(activeButton);
+  }
 }

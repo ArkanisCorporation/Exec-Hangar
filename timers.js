@@ -81,7 +81,6 @@ const timerSections = [
   },
 ];
 
-const timerInstances = new Map();
 let audioCtx;
 let notificationPermissionRequested = false;
 
@@ -227,36 +226,41 @@ function renderTimerCard(timer, sectionTitle, groupTitle) {
   `;
 }
 
+function renderTimerGroup(section, group) {
+  return `
+    <article class="timer-group">
+      <div class="timer-group__title">${group.title}</div>
+      <div class="timer-grid">
+        ${group.timers
+          .map((timer) => renderTimerCard(timer, section.title, group.title))
+          .join("")}
+      </div>
+    </article>
+  `;
+}
+
 function renderTimerSections() {
   const mount = document.getElementById("timer-sections");
   if (!mount) return;
   mount.innerHTML = timerSections
-    .map(
-      (section) => `
-      <section class="timer-section" id="${section.id}">
-        <header class="timer-section__header">
-          <div>
-            <h2>${section.title}</h2>
-            <p>${section.description}</p>
+    .map((section) => {
+      const groupsMarkup = section.groups
+        .map((group) => renderTimerGroup(section, group))
+        .join("");
+      return `
+        <section class="timer-section" id="${section.id}">
+          <header class="timer-section__header">
+            <div>
+              <h2>${section.title}</h2>
+              <p>${section.description}</p>
+            </div>
+          </header>
+          <div class="timer-section__groups">
+            ${groupsMarkup}
           </div>
-        </header>
-        <div class="timer-section__groups">
-          ${section.groups
-            .map(
-              (group) => `
-            <article class="timer-group">
-              <div class="timer-group__title">${group.title}</div>
-              <div class="timer-grid">
-                ${group.timers.map((timer) => renderTimerCard(timer, section.title, group.title)).join("")}
-              </div>
-            </article>
-          `
-            )
-            .join("")}
-        </div>
-      </section>
-    `
-    )
+        </section>
+      `;
+    })
     .join("");
 }
 
@@ -271,8 +275,7 @@ function hydrateTimers() {
       section: card.dataset.section,
       group: card.dataset.group,
     };
-    const instance = new SelfTimer(card, config);
-    timerInstances.set(id, instance);
+    new SelfTimer(card, config);
   });
 }
 

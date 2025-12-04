@@ -24,6 +24,33 @@
     <title>Executive Hangar Status</title>
 
     <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/photoswipe@5/dist/photoswipe.css"
+    />
+    <script type="module">
+      import PhotoSwipeLightbox from "https://cdn.jsdelivr.net/npm/photoswipe@5/dist/photoswipe-lightbox.esm.min.js";
+
+      window.addEventListener("DOMContentLoaded", () => {
+        const mapsPanel = document.querySelector("#maps-panel");
+        if (!mapsPanel) return;
+        const lightbox = new PhotoSwipeLightbox({
+          gallery: mapsPanel,
+          children: ".map-preview__link",
+          pswpModule: () =>
+            import("https://cdn.jsdelivr.net/npm/photoswipe@5/dist/photoswipe.esm.min.js"),
+          showHideAnimationType: "zoom",
+          padding: { top: 24, bottom: 24, left: 16, right: 16 },
+          wheelToZoom: true,
+          zoom: true,
+          imageClickAction: "zoom",
+          secondaryZoomLevel: 2.2,
+          maxZoomPixelRatio: 4,
+        });
+        lightbox.init();
+        window.execMapLightbox = lightbox;
+      });
+    </script>
   </head>
   <body class="app-shell">
     <header class="site-header">
@@ -200,10 +227,81 @@
                   Quick visual cues for doorways, spawn points, and service desks.
                 </p>
               </header>
-              <p class="map-placeholder">
-                Map references are temporarily offline. Check back soon for the
-                latest contested zone layouts.
-              </p>
+
+<div class="map-list" role="tablist">
+  <button
+    type="button"
+    class="map-list__item map-list__item--active"
+    data-map-src="assets/Checkmate Map.webp"
+    data-map-title="Checkmate"
+    data-map-description="Keycard + compboard routes through the hangar and security wing."
+  >
+    Checkmate
+  </button>
+  <button
+    type="button"
+    class="map-list__item"
+    data-map-src="assets/Orbituary Map.webp"
+    data-map-title="Orbituary"
+    data-map-description="Tablet stations on the mezzanine plus auxiliary access halls."
+  >
+    Orbituary
+  </button>
+  <button
+    type="button"
+    class="map-list__item"
+    data-map-src="assets/Ruin Map.webp"
+    data-map-title="Ruin Station"
+    data-map-description="The Vault, Last Resort, Wasteland, and Crypt pathways."
+  >
+    Ruin Station
+  </button>
+  <button
+    type="button"
+    class="map-list__item"
+    data-map-src="assets/Executive Hangar Map.webp"
+    data-map-title="PYAM-EXHANG-0-1"
+    data-map-description="Executive hangar lobby checkpoints and service counters."
+  >
+    PYAM-EXHANG-0-1
+  </button>
+  <button
+    type="button"
+    class="map-list__item"
+    data-map-src="assets/Supervisor Map.webp"
+    data-map-title="PYAM-SUPVISR-3-4/5"
+    data-map-description="Supervisor wing red keycard checkpoints and security office."
+  >
+    PYAN-SUPVISR-3-4/5
+  </button>
+</div>
+              <div class="map-preview">
+                <div class="map-preview__frame">
+                  <img
+                    id="map-preview-image"
+                    src="assets/Checkmate Map.webp"
+                    alt="Checkmate contested zone map"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="map-preview__details">
+                  <h3 id="map-preview-title">Checkmate</h3>
+                  <p id="map-preview-description">
+                    Keycard + compboard routes through the hangar and security wing.
+                  </p>
+                  <a
+                    id="map-preview-link"
+                    class="map-preview__link"
+                    data-pswp-src="assets/Checkmate Map.webp"
+                    data-pswp-width="2048"
+                    data-pswp-height="1152"
+                    data-pswp-caption="Checkmate - Keycard + compboard routes through the hangar and security wing."
+                    href="assets/Checkmate Map.webp"
+                  >
+                    View overlay
+                  </a>
+                </div>
+              </div>
             </section>
           </div>
         </div>
@@ -217,7 +315,7 @@
     <footer class="site-footer">
       &copy; 2025
       <a class="link link-hover" href="https://github.com/NBDBatman/"
-        >NBDBatman</a
+        >NBDBatman / MercuryHQ</a
       >
       &
       <a class="link link-hover" href="https://github.com/ArkanisCorporation"
