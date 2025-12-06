@@ -1,3 +1,9 @@
+const TIMER_PRESETS = Object.freeze({
+  keycard: 15,
+  comboard: 30,
+  redKeycard: 30,
+});
+
 const timerSections = [
   {
     id: "checkmate",
@@ -6,18 +12,20 @@ const timerSections = [
     groups: [
       {
         title: "Blue Keycards",
+        preset: "keycard",
         timers: [
-          { id: "checkmate-terminal-1", label: "Terminal 1", minutes: 15 },
-          { id: "checkmate-terminal-2", label: "Terminal 2", minutes: 15 },
-          { id: "checkmate-terminal-3", label: "Terminal 3", minutes: 15 },
+          { id: "checkmate-terminal-1", label: "Terminal 1" },
+          { id: "checkmate-terminal-2", label: "Terminal 2" },
+          { id: "checkmate-terminal-3", label: "Terminal 3" },
         ],
       },
       {
         title: "Comboards",
+        preset: "comboard",
         timers: [
-          { id: "checkmate-tablet-1", label: "Tablet 1", minutes: 30 },
-          { id: "checkmate-tablet-2", label: "Tablet 2", minutes: 30 },
-          { id: "checkmate-tablet-3", label: "Tablet 3", minutes: 30 },
+          { id: "checkmate-tablet-1", label: "Tablet 1" },
+          { id: "checkmate-tablet-2", label: "Tablet 2" },
+          { id: "checkmate-tablet-3", label: "Tablet 3" },
         ],
       },
     ],
@@ -29,16 +37,18 @@ const timerSections = [
     groups: [
       {
         title: "Blue Keycards",
+        preset: "keycard",
         timers: [
-          { id: "orbituary-terminal-1", label: "Terminal 1", minutes: 15 },
-          { id: "orbituary-terminal-2", label: "Terminal 2", minutes: 15 },
+          { id: "orbituary-terminal-1", label: "Terminal 1" },
+          { id: "orbituary-terminal-2", label: "Terminal 2" },
         ],
       },
       {
         title: "Comboards",
+        preset: "comboard",
         timers: [
-          { id: "orbituary-tablet-4", label: "Tablet 4", minutes: 30 },
-          { id: "orbituary-tablet-7", label: "Tablet 7", minutes: 30 },
+          { id: "orbituary-tablet-4", label: "Tablet 4" },
+          { id: "orbituary-tablet-7", label: "Tablet 7" },
         ],
       },
     ],
@@ -50,17 +60,19 @@ const timerSections = [
     groups: [
       {
         title: "Keycards",
+        preset: "keycard",
         timers: [
-          { id: "ruin-crypt", label: "The Crypt", minutes: 15 },
-          { id: "ruin-last-resort", label: "The Last Resort", minutes: 15 },
-          { id: "ruin-wasteland", label: "The Wasteland", minutes: 15 },
+          { id: "ruin-crypt", label: "The Crypt" },
+          { id: "ruin-last-resort", label: "The Last Resort" },
+          { id: "ruin-wasteland", label: "The Wasteland" },
         ],
       },
       {
         title: "Comboards",
+        preset: "comboard",
         timers: [
-          { id: "ruin-tablet-5", label: "Tablet 5", minutes: 30 },
-          { id: "ruin-tablet-6", label: "Tablet 6", minutes: 30 },
+          { id: "ruin-tablet-5", label: "Tablet 5" },
+          { id: "ruin-tablet-6", label: "Tablet 6" },
         ],
       },
     ],
@@ -72,14 +84,27 @@ const timerSections = [
     groups: [
       {
         title: "Red Keycards",
+        preset: "redKeycard",
         timers: [
-          { id: "pyam-34", label: "3-4", minutes: 30 },
-          { id: "pyam-35", label: "3-5", minutes: 30 },
+          { id: "pyam-34", label: "3-4" },
+          { id: "pyam-35", label: "3-5" },
         ],
       },
     ],
   },
-];
+].map((section) => ({
+  ...section,
+  groups: section.groups.map((group) => {
+    const presetMinutes = TIMER_PRESETS[group.preset] ?? TIMER_PRESETS.keycard;
+    return {
+      title: group.title,
+      timers: group.timers.map((timer) => ({
+        ...timer,
+        minutes: timer.minutes ?? presetMinutes,
+      })),
+    };
+  }),
+}));
 
 let audioCtx;
 let notificationPermissionRequested = false;

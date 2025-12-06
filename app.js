@@ -429,16 +429,9 @@ function setupPanelSwitcher() {
 
   const updateIndicator = () => {
     const activeTab = document.querySelector(".panel-tab--active");
-    if (!activeTab) return;
-    const { offsetLeft, offsetWidth } = activeTab;
-    const indicatorOffset = offsetLeft;
-    const indicatorWidth = offsetWidth;
-    tabContainer.style.setProperty("--tab-indicator-offset", `${indicatorOffset}px`);
-    tabContainer.style.setProperty("--tab-indicator-width", `${indicatorWidth}px`);
-    tabContainer.style.setProperty("--tab-indicator-scale", "1.08");
-    setTimeout(() => {
-      tabContainer.style.setProperty("--tab-indicator-scale", "1");
-    }, 180);
+    requestAnimationFrame(() =>
+      applyTabIndicatorStyles(tabContainer, activeTab)
+    );
   };
 
   const activatePanel = (targetId) => {
@@ -457,18 +450,16 @@ function setupPanelSwitcher() {
     if (targetId === "cycles-panel") {
       requestAnimationFrame(adjustCycleViewportHeight);
     }
-    requestAnimationFrame(updateIndicator);
+    updateIndicator();
   };
 
   tabs.forEach((tab) => {
     tab.addEventListener("click", () => activatePanel(tab.dataset.panelTarget));
   });
 
-  window.addEventListener("resize", () => {
-    requestAnimationFrame(updateIndicator);
-  });
+  window.addEventListener("resize", updateIndicator);
 
-  requestAnimationFrame(updateIndicator);
+  updateIndicator();
 }
 
 function setupMapPreview() {
@@ -476,8 +467,7 @@ function setupMapPreview() {
   const previewTitle = document.getElementById("map-preview-title");
   const previewDescription = document.getElementById("map-preview-description");
   const previewLink = document.getElementById("map-preview-link");
-  const mapButtons = document.querySelectorAll(".map-list__item");
-  let dimensionProbe;
+  const mapButtons = Array.from(document.querySelectorAll(".map-list__item"));
   if (
     !previewImage ||
     !previewTitle ||
@@ -487,6 +477,8 @@ function setupMapPreview() {
   ) {
     return;
   }
+
+  let dimensionProbe;
 
   const applyDimensions = (width, height) => {
     const safeWidth =
@@ -508,52 +500,68 @@ function setupMapPreview() {
     }
     dimensionProbe = new Image();
     dimensionProbe.onload = () => {
-      if (previewLink.getAttribute("data-pswp-src") !== src) {
-        return;
-      }
+      if (previewLink.getAttribute("data-pswp-src") !== src) return;
       applyDimensions(dimensionProbe.naturalWidth, dimensionProbe.naturalHeight);
     };
     dimensionProbe.src = src;
   };
 
-  const updatePreview = (button) => {
-    const {
-      mapSrc,
-      mapTitle,
-      mapDescription,
-      mapWidth,
-      mapHeight,
-    } = button.dataset;
-    if (!mapSrc || !mapTitle) return;
-    previewImage.src = mapSrc;
-    previewImage.alt = `${mapTitle} contested zone map`;
-    previewLink.href = mapSrc;
-    previewLink.dataset.pswpSrc = mapSrc;
-    previewLink.setAttribute("data-pswp-src", mapSrc);
-    previewTitle.textContent = mapTitle;
-    previewDescription.textContent = mapDescription;
-    const width = Number.parseInt(mapWidth, 10);
-    const height = Number.parseInt(mapHeight, 10);
-    applyDimensions(width, height);
+  const mapConfigs = mapButtons.map((button) => ({
+    button,
+    src: button.dataset.mapSrc,
+    title: button.dataset.mapTitle,
+    description: button.dataset.mapDescription,
+    width: Number.parseInt(button.dataset.mapWidth, 10),
+    height: Number.parseInt(button.dataset.mapHeight, 10),
+  }));
+
+  const applyPreview = (config) => {
+    if (!config || !config.src || !config.title) return;
+    previewImage.src = config.src;
+    previewImage.alt = `${config.title} contested zone map`;
+    previewLink.href = config.src;
+    previewLink.dataset.pswpSrc = config.src;
+    previewLink.setAttribute("data-pswp-src", config.src);
+    previewTitle.textContent = config.title;
+    previewDescription.textContent = config.description;
+    applyDimensions(config.width, config.height);
     previewLink.setAttribute(
       "data-pswp-caption",
-      `${mapTitle} - ${mapDescription}`
+      `${config.title} - ${config.description}`
     );
-    probeDimensions(mapSrc);
+    probeDimensions(config.src);
   };
 
-  mapButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      mapButtons.forEach((btn) =>
-        btn.classList.remove("map-list__item--active")
-      );
-      button.classList.add("map-list__item--active");
-      updatePreview(button);
+  const setActiveButton = (button) => {
+    mapButtons.forEach((btn) =>
+      btn.classList.toggle("map-list__item--active", btn === button)
+    );
+  };
+
+  mapConfigs.forEach((config) => {
+    config.button.addEventListener("click", () => {
+      setActiveButton(config.button);
+      applyPreview(config);
     });
   });
 
-  const activeButton = document.querySelector(".map-list__item--active");
-  if (activeButton) {
-    updatePreview(activeButton);
+  const activeConfig =
+    mapConfigs.find((cfg) =>
+      cfg.button.classList.contains("map-list__item--active")
+    ) || mapConfigs[0];
+  if (activeConfig) {
+    setActiveButton(activeConfig.button);
+    applyPreview(activeConfig);
   }
+}
+
+function applyTabIndicatorStyles(tabContainer, activeTab) {
+  if (!tabContainer || !activeTab) return;
+  const { offsetLeft, offsetWidth } = activeTab;
+  tabContainer.style.setProperty("--tab-indicator-offset", `${offsetLeft}px`);
+  tabContainer.style.setProperty("--tab-indicator-width", `${offsetWidth}px`);
+  tabContainer.style.setProperty("--tab-indicator-scale", "1.08");
+  setTimeout(() => {
+    tabContainer.style.setProperty("--tab-indicator-scale", "1");
+  }, 180);
 }
