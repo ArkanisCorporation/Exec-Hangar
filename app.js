@@ -368,7 +368,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const config = await loadConfig();
   applyConfig(config);
   setupPanelSwitcher();
-  setupMapPreview();
+  setupMapPreview(config);
 
   if (!settings.initialOpenTime) {
     console.error(
@@ -462,11 +462,13 @@ function setupPanelSwitcher() {
   updateIndicator();
 }
 
-function setupMapPreview() {
+function setupMapPreview(appConfig = {}) {
   const previewImage = document.getElementById("map-preview-image");
   const previewTitle = document.getElementById("map-preview-title");
   const previewDescription = document.getElementById("map-preview-description");
   const previewLink = document.getElementById("map-preview-link");
+  const previewCredit = document.getElementById("map-credit");
+  const previewCreditLink = document.getElementById("map-credit-link");
   const mapButtons = Array.from(document.querySelectorAll(".map-list__item"));
   if (
     !previewImage ||
@@ -506,6 +508,8 @@ function setupMapPreview() {
     dimensionProbe.src = src;
   };
 
+  const mapCredits = appConfig.mapCredits || {};
+
   const mapConfigs = mapButtons.map((button) => ({
     button,
     src: button.dataset.mapSrc,
@@ -513,7 +517,32 @@ function setupMapPreview() {
     description: button.dataset.mapDescription,
     width: Number.parseInt(button.dataset.mapWidth, 10),
     height: Number.parseInt(button.dataset.mapHeight, 10),
+    key: button.dataset.mapKey,
   }));
+
+  const applyCredit = (mapKey) => {
+    if (!previewCredit) return;
+    const creditData = mapKey ? mapCredits[mapKey] : null;
+    if (creditData && creditData.label) {
+      previewCredit.hidden = false;
+      if (previewCreditLink) {
+        previewCreditLink.textContent = creditData.label;
+        if (creditData.url) {
+          previewCreditLink.href = creditData.url;
+          previewCreditLink.target = "_blank";
+          previewCreditLink.rel = "noopener";
+        } else {
+          previewCreditLink.removeAttribute("href");
+          previewCreditLink.removeAttribute("target");
+          previewCreditLink.removeAttribute("rel");
+        }
+      } else {
+        previewCredit.textContent = `Created by ${creditData.label}`;
+      }
+    } else {
+      previewCredit.hidden = true;
+    }
+  };
 
   const applyPreview = (config) => {
     if (!config || !config.src || !config.title) return;
@@ -524,6 +553,7 @@ function setupMapPreview() {
     previewLink.setAttribute("data-pswp-src", config.src);
     previewTitle.textContent = config.title;
     previewDescription.textContent = config.description;
+    applyCredit(config.key);
     applyDimensions(config.width, config.height);
     previewLink.setAttribute(
       "data-pswp-caption",

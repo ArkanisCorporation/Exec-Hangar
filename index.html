@@ -206,7 +206,7 @@
                   <p class="timer-alert__copy">
                     Every timer runs locally—no accounts, no sync. When prompted,
                     allow sound or notification access so completed timers chime and
-                    desktop toasts pop up even if this tab is in the background.
+                    desktop notifications pop up even if this tab is in the background.
                   </p>
                 </div>
               </div>
@@ -232,6 +232,7 @@
   <button
     type="button"
     class="map-list__item map-list__item--active"
+    data-map-key="checkmate"
     data-map-src="assets/Checkmate Map.webp"
     data-map-title="Checkmate"
     data-map-description="Keycard + compboard routes through the hangar and security wing."
@@ -241,6 +242,7 @@
   <button
     type="button"
     class="map-list__item"
+    data-map-key="orbituary"
     data-map-src="assets/Orbituary Map.webp"
     data-map-title="Orbituary"
     data-map-description="Tablet stations on the mezzanine plus auxiliary access halls."
@@ -250,6 +252,7 @@
   <button
     type="button"
     class="map-list__item"
+    data-map-key="ruin-station"
     data-map-src="assets/Ruin Map.webp"
     data-map-title="Ruin Station"
     data-map-description="The Vault, Last Resort, Wasteland, and Crypt pathways."
@@ -259,6 +262,7 @@
   <button
     type="button"
     class="map-list__item"
+    data-map-key="pyam-exhang"
     data-map-src="assets/Executive Hangar Map.webp"
     data-map-title="PYAM-EXHANG-0-1"
     data-map-description="Executive hangar lobby checkpoints and service counters."
@@ -268,11 +272,12 @@
   <button
     type="button"
     class="map-list__item"
+    data-map-key="pyam-supvisr"
     data-map-src="assets/Supervisor Map.webp"
     data-map-title="PYAM-SUPVISR-3-4/5"
     data-map-description="Supervisor wing red keycard checkpoints and security office."
   >
-    PYAN-SUPVISR-3-4/5
+    PYAM-SUPVISR-3-4/5
   </button>
 </div>
               <div class="map-preview">
@@ -285,7 +290,19 @@
                   />
                 </div>
                 <div class="map-preview__details">
-                  <h3 id="map-preview-title">Checkmate</h3>
+                  <div class="map-preview__heading">
+                    <h3 id="map-preview-title">Checkmate</h3>
+                    <p class="map-credit" id="map-credit">
+                      Created by
+                      <a
+                        id="map-credit-link"
+                        href="https://arkanis.cc/"
+                        target="_blank"
+                        rel="noopener"
+                        >Arkanis Cartography</a
+                      >
+                    </p>
+                  </div>
                   <p id="map-preview-description">
                     Keycard + compboard routes through the hangar and security wing.
                   </p>
