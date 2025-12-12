@@ -920,6 +920,7 @@ body[data-status="offline"] #cycle-meta {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  cursor: zoom-in;
 }
 
 .map-preview__frame img {
@@ -928,6 +929,7 @@ body[data-status="offline"] #cycle-meta {
   border-radius: 16px;
   object-fit: contain;
   display: block;
+  cursor: inherit;
 }
 
 .map-preview__details h3 {
@@ -1125,4 +1127,3 @@ body[data-status="offline"] #cycle-meta {
     background: rgba(228, 236, 255, 0.82);
   }
 }
-

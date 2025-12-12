@@ -495,6 +495,15 @@ function setupMapPreview(appConfig = {}) {
     previewLink.setAttribute("data-pswp-height", safeHeight);
   };
 
+  const openPreviewOverlay = (event) => {
+    if (event) event.preventDefault();
+    if (previewLink) {
+      previewLink.click();
+    }
+  };
+
+  previewImage.addEventListener("click", openPreviewOverlay);
+
   const probeDimensions = (src) => {
     if (!src) return;
     if (dimensionProbe) {
