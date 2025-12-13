@@ -125,6 +125,11 @@ const thresholds = [
   }, // Offline 4G1R
 ];
 
+const mapDefaultDimensions = {
+  width: 2048,
+  height: 1152,
+};
+
 async function loadConfig() {
   try {
     const response = await fetch("config.json", { cache: "no-store" });
@@ -362,6 +367,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const config = await loadConfig();
   applyConfig(config);
+  setupPanelSwitcher();
+  setupMapPreview(config);
 
   if (!settings.initialOpenTime) {
     console.error(
@@ -412,4 +419,188 @@ function adjustCycleViewportHeight() {
       `${Math.ceil(totalHeight)}px`
     );
   }
+}
+
+function setupPanelSwitcher() {
+  const tabs = document.querySelectorAll(".panel-tab");
+  const panels = document.querySelectorAll(".panel-view");
+  const tabContainer = document.querySelector(".panel-tabs");
+  if (!tabs.length || !panels.length || !tabContainer) return;
+
+  const updateIndicator = () => {
+    const activeTab = document.querySelector(".panel-tab--active");
+    requestAnimationFrame(() =>
+      applyTabIndicatorStyles(tabContainer, activeTab)
+    );
+  };
+
+  const activatePanel = (targetId) => {
+    panels.forEach((panel) => {
+      const isActive = panel.id === targetId;
+      panel.classList.toggle("panel-view--active", isActive);
+      panel.toggleAttribute("hidden", !isActive);
+    });
+
+    tabs.forEach((tab) => {
+      const isActive = tab.dataset.panelTarget === targetId;
+      tab.classList.toggle("panel-tab--active", isActive);
+      tab.setAttribute("aria-selected", isActive ? "true" : "false");
+    });
+
+    if (targetId === "cycles-panel") {
+      requestAnimationFrame(adjustCycleViewportHeight);
+    }
+    updateIndicator();
+  };
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => activatePanel(tab.dataset.panelTarget));
+  });
+
+  window.addEventListener("resize", updateIndicator);
+
+  updateIndicator();
+}
+
+function setupMapPreview(appConfig = {}) {
+  const previewImage = document.getElementById("map-preview-image");
+  const previewTitle = document.getElementById("map-preview-title");
+  const previewDescription = document.getElementById("map-preview-description");
+  const previewLink = document.getElementById("map-preview-link");
+  const previewCredit = document.getElementById("map-credit");
+  const previewCreditLink = document.getElementById("map-credit-link");
+  const mapButtons = Array.from(document.querySelectorAll(".map-list__item"));
+  if (
+    !previewImage ||
+    !previewTitle ||
+    !previewDescription ||
+    !previewLink ||
+    !mapButtons.length
+  ) {
+    return;
+  }
+
+  let dimensionProbe;
+
+  const applyDimensions = (width, height) => {
+    const safeWidth =
+      Number.isFinite(width) && width > 0
+        ? Math.round(width)
+        : mapDefaultDimensions.width;
+    const safeHeight =
+      Number.isFinite(height) && height > 0
+        ? Math.round(height)
+        : mapDefaultDimensions.height;
+    previewLink.setAttribute("data-pswp-width", safeWidth);
+    previewLink.setAttribute("data-pswp-height", safeHeight);
+  };
+
+  const openPreviewOverlay = (event) => {
+    if (event) event.preventDefault();
+    if (previewLink) {
+      previewLink.click();
+    }
+  };
+
+  previewImage.addEventListener("click", openPreviewOverlay);
+
+  const probeDimensions = (src) => {
+    if (!src) return;
+    if (dimensionProbe) {
+      dimensionProbe.onload = null;
+    }
+    dimensionProbe = new Image();
+    dimensionProbe.onload = () => {
+      if (previewLink.getAttribute("data-pswp-src") !== src) return;
+      applyDimensions(dimensionProbe.naturalWidth, dimensionProbe.naturalHeight);
+    };
+    dimensionProbe.src = src;
+  };
+
+  const mapCredits = appConfig.mapCredits || {};
+
+  const mapConfigs = mapButtons.map((button) => ({
+    button,
+    src: button.dataset.mapSrc,
+    title: button.dataset.mapTitle,
+    description: button.dataset.mapDescription,
+    width: Number.parseInt(button.dataset.mapWidth, 10),
+    height: Number.parseInt(button.dataset.mapHeight, 10),
+    key: button.dataset.mapKey,
+  }));
+
+  const applyCredit = (mapKey) => {
+    if (!previewCredit) return;
+    const creditData = mapKey ? mapCredits[mapKey] : null;
+    if (creditData && creditData.label) {
+      previewCredit.hidden = false;
+      if (previewCreditLink) {
+        previewCreditLink.textContent = creditData.label;
+        if (creditData.url) {
+          previewCreditLink.href = creditData.url;
+          previewCreditLink.target = "_blank";
+          previewCreditLink.rel = "noopener";
+        } else {
+          previewCreditLink.removeAttribute("href");
+          previewCreditLink.removeAttribute("target");
+          previewCreditLink.removeAttribute("rel");
+        }
+      } else {
+        previewCredit.textContent = `Created by ${creditData.label}`;
+      }
+    } else {
+      previewCredit.hidden = true;
+    }
+  };
+
+  const applyPreview = (config) => {
+    if (!config || !config.src || !config.title) return;
+    previewImage.src = config.src;
+    previewImage.alt = `${config.title} contested zone map`;
+    previewLink.href = config.src;
+    previewLink.dataset.pswpSrc = config.src;
+    previewLink.setAttribute("data-pswp-src", config.src);
+    previewTitle.textContent = config.title;
+    previewDescription.textContent = config.description;
+    applyCredit(config.key);
+    applyDimensions(config.width, config.height);
+    previewLink.setAttribute(
+      "data-pswp-caption",
+      `${config.title} - ${config.description}`
+    );
+    probeDimensions(config.src);
+  };
+
+  const setActiveButton = (button) => {
+    mapButtons.forEach((btn) =>
+      btn.classList.toggle("map-list__item--active", btn === button)
+    );
+  };
+
+  mapConfigs.forEach((config) => {
+    config.button.addEventListener("click", () => {
+      setActiveButton(config.button);
+      applyPreview(config);
+    });
+  });
+
+  const activeConfig =
+    mapConfigs.find((cfg) =>
+      cfg.button.classList.contains("map-list__item--active")
+    ) || mapConfigs[0];
+  if (activeConfig) {
+    setActiveButton(activeConfig.button);
+    applyPreview(activeConfig);
+  }
+}
+
+function applyTabIndicatorStyles(tabContainer, activeTab) {
+  if (!tabContainer || !activeTab) return;
+  const { offsetLeft, offsetWidth } = activeTab;
+  tabContainer.style.setProperty("--tab-indicator-offset", `${offsetLeft}px`);
+  tabContainer.style.setProperty("--tab-indicator-width", `${offsetWidth}px`);
+  tabContainer.style.setProperty("--tab-indicator-scale", "1.08");
+  setTimeout(() => {
+    tabContainer.style.setProperty("--tab-indicator-scale", "1");
+  }, 180);
 }

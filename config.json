@@ -1,8 +1,30 @@
 {
-  "versionInfo": "Updated Nov 21, 2025 - Patch 4.4.0-LIVE - Server 10753606",
+  "versionInfo": "Updated Dec 12, 2025 - Patch 4.4.0-LIVE - Server 10766222",
   "serverStartTimes": {
     "initialOpenTime": "2025-11-22T02:24:11.000Z",
-    "openDurationMs": 3900417,
-    "closeDurationMs": 7200771
+    "openDurationMs": 3900362,
+    "closeDurationMs": 7200667
+  },
+  "mapCredits": {
+    "checkmate": {
+      "label": "@cmd_Terada",
+      "url": "https://x.com/cmd_Terada/status/1871215606890148245"
+    },
+    "orbituary": {
+      "label": "@cmd_Terada",
+      "url": "https://x.com/cmd_Terada/status/1871215606890148245"
+    },
+    "ruin-station": {
+      "label": "@cmd_Terada",
+      "url": "https://x.com/cmd_Terada/status/1871215606890148245"
+    },
+    "pyam-exhang": {
+      "label": "u/Kerast",
+      "url": "https://www.reddit.com/r/starcitizen/comments/1i3iyq9/supervisor_exectutive_hangar_maps_pyamsupvisr345/#lightbox"
+    },
+    "pyam-supvisr": {
+      "label": "u/Kerast",
+      "url": "https://www.reddit.com/r/starcitizen/comments/1i3iyq9/supervisor_exectutive_hangar_maps_pyamsupvisr345/#lightbox"
+    }
   }
 }
