@@ -44,28 +44,6 @@ body::before {
   filter: blur(5px);
   transform: scale(1.05);
 }
-@media (prefers-color-scheme: light) {
-  :root {
-    --page-bg-bottom: rgba(215, 223, 244, 0.6);
-    --text-primary: #101627;
-    --text-subtle: rgba(53, 63, 92, 0.9);
-    --card-border: rgba(27, 39, 70, 0.12);
-    --card-shadow: 0 22px 40px rgba(54, 73, 121, 0.1);
-    --chip-bg: rgba(229, 236, 255, 0.65);
-    --chip-border: rgba(76, 97, 150, 0.2);
-    --table-divider: rgba(173, 184, 209, 0.6);
-    --panel-surface-bg: rgba(240, 244, 255, 0.9);
-    --panel-surface-alt: rgba(228, 235, 255, 0.88);
-    --pill-surface-border: rgba(53, 63, 92, 0.2);
-    --pill-surface-bg: rgba(53, 63, 92, 0.08);
-    --accent-online: #2f8d62;
-    --accent-offline: #d94f63;
-  }
-  body {
-    background-color: #eef1fb;
-    color: var(--text-primary);
-  }
-}
 
 .app-shell {
   min-height: 100vh;
@@ -1081,49 +1059,5 @@ body[data-status="offline"] #cycle-meta {
 
   .timer-section {
     padding: 18px;
-  }
-}
-
-@media (prefers-color-scheme: light) {
-  .site-header {
-    background: rgba(228, 236, 255, 0.92);
-    border-bottom-color: rgba(53, 63, 92, 0.28);
-  }
-  .cycles-details {
-    background: rgba(232, 239, 255, 0.78);
-  }
-  .info-card {
-    background: rgba(255, 255, 255, 0.9);
-  }
-  .info-card-note {
-    background: rgba(218, 228, 250, 0.82);
-  }
-  .cycle-group {
-    background: rgba(255, 255, 255, 0.88);
-  }
-  .cycle-group-header {
-    background: rgba(214, 223, 245, 0.84);
-  }
-  .cycle-group-entry {
-    background: rgba(214, 225, 248, 0.72);
-  }
-  .timer-section {
-    background: rgba(255, 255, 255, 0.84);
-  }
-  .timer-group {
-    background: rgba(233, 240, 255, 0.9);
-  }
-  .timer-card {
-    background: rgba(255, 255, 255, 0.92);
-  }
-  .panel-tabs {
-    background: rgba(233, 239, 255, 0.92);
-    border-color: rgba(40, 60, 110, 0.1);
-  }
-  .panel-tab--active {
-    background: rgba(70, 190, 140, 0.25);
-  }
-  .site-footer {
-    background: rgba(228, 236, 255, 0.82);
   }
 }
