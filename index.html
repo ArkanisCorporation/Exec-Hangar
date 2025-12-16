@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="business">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -79,9 +79,7 @@
     <main class="app-main">
       <section class="status-stack">
         <header class="page-heading">
-          <h1 class="font-inter text-3xl font-extrabold tracking-tight">
-            Executive Hangar Status
-          </h1>
+          <h1>Executive Hangar Status</h1>
           <p class="sub">Live PYAM window tracker with cycle forecast</p>
         </header>
 
@@ -90,19 +88,19 @@
             <div class="status-grid">
               <div class="status-block">
                 <div class="info-title">Current status</div>
-                <p id="status" class="status font-black uppercase tracking-[0.18em]">
+                <p id="status" class="status">
                   --
                 </p>
                 <p
                   id="cycle-meta"
-                  class="cycle-meta text-xs uppercase tracking-[0.18em]"
+                  class="cycle-meta"
                 >
                   Cycle --
                 </p>
               </div>
               <div class="countdown-block">
                 <div class="info-title">Time until next change</div>
-                <p id="countdown" class="count font-mono font-black">
+                <p id="countdown" class="count">
                   00:00
                 </p>
               </div>
@@ -111,7 +109,7 @@
                 <div class="cycle-progress-copy">
                   <p class="cycle-progress-text">Cycle progress indicator:</p>
                   <div
-                    class="lights flex items-center gap-2"
+                    class="status-lights"
                     role="img"
                     aria-label="Status lights"
                   >
@@ -138,7 +136,7 @@
         </div>
       </section>
 
-      <div class="divider my-6"></div>
+      <div class="section-divider"></div>
 
       <section class="panel-switcher" aria-label="Tracker views">
         <div class="panel-tabs" role="tablist">
@@ -324,25 +322,23 @@
         </div>
       </section>
 
-      <p class="hint mt-6 text-xs">
+      <p class="page-hint">
         Tip: leave this tab open for a live countdown. No cookies or account
         required.
       </p>
     </main>
     <footer class="site-footer">
       &copy; 2025
-      <a class="link link-hover" href="https://github.com/NBDBatman/"
-        >NBDBatman / MercuryHQ</a
-      >
+      <a href="https://github.com/NBDBatman/">NBDBatman / MercuryHQ</a>
       &
-      <a class="link link-hover" href="https://github.com/ArkanisCorporation"
-        >Arkanis Corporation</a
-      >
+      <a href="https://github.com/ArkanisCorporation">Arkanis Corporation</a>
       &middot;
-      <a class="link link-hover" href="../license/">MIT License</a>
+      <a href="../license/">MIT License</a>
+      &middot;
+      <a href="https://github.com/ArkanisCorporation/Exec-Hangar">Github</a>
       <br />
         Star Citizen®, Roberts Space Industries® and Cloud Imperium ® are registered trademarks of 
-        <a class="link link-hover" href="https://cloudimperiumgames.com/"
+        <a href="https://cloudimperiumgames.com/"
         >Cloud Imperium Rights LLC</a
       >
     </footer>

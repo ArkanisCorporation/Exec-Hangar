@@ -242,11 +242,11 @@ function renderTimerCard(timer, sectionTitle, groupTitle) {
       </div>
       <div class="timer-card__display" data-role="time">--:--</div>
       <div class="timer-card__controls">
-        <button type="button" class="btn timer-btn" data-action="minus">-1m</button>
-        <button type="button" class="btn timer-btn" data-action="plus">+1m</button>
-        <button type="button" class="btn btn--ghost timer-btn" data-action="reset">Reset</button>
+        <button type="button" class="timer-btn" data-action="minus">-1m</button>
+        <button type="button" class="timer-btn" data-action="plus">+1m</button>
+        <button type="button" class="timer-btn timer-btn--ghost" data-action="reset">Reset</button>
       </div>
-      <button type="button" class="btn btn--primary timer-btn" data-action="toggle">Start</button>
+      <button type="button" class="timer-btn timer-btn--primary" data-action="toggle">Start</button>
     </div>
   `;
 }
