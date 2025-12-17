@@ -107,8 +107,6 @@ body::before {
   width: 48px;
   height: 48px;
   object-fit: contain;
-  border-radius: 12px;
-  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.4);
 }
 
 .brand-copy {
