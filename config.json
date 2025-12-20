@@ -1,7 +1,7 @@
 {
-  "versionInfo": "Updated Dec 12, 2025 - Patch 4.4.0-LIVE - Server 10766222",
+  "versionInfo": "Updated Dec 20, 2025 - Patch 4.5.0-LIVE - Server 10967244",
   "serverStartTimes": {
-    "initialOpenTime": "2025-11-22T02:24:11.000Z",
+    "initialOpenTime": "2025-12-18T01:17:49.357Z",
     "openDurationMs": 3900362,
     "closeDurationMs": 7200667
   },
