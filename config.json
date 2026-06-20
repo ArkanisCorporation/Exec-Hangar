@@ -1,9 +1,9 @@
 {
-  "versionInfo": "Updated June 12, 2026 - Patch 4.8.1-LIVE - Server 11952564",
+  "versionInfo": "Updated June 20, 2026 - Patch 4.8.2-LIVE - Server 12030094",
   "serverStartTimes": {
-    "initialOpenTime": "2026-06-10T00:37:55.696Z",
-    "openDurationMs": 3900074,
-    "closeDurationMs": 7200152
+    "initialOpenTime": "2026-06-19T00:11:10.025000Z",
+    "openDurationMs": 3900079,
+    "closeDurationMs": 7200147
   },
   "mapCredits": {
     "checkmate": {
