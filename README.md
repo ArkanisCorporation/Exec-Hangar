@@ -27,8 +27,22 @@ Executive Hangar Status is a lightweight, front‑end tracker for the PYAM Execu
 ├─ style.css        # Theme + layout rules
 ├─ config.json      # Version + timing configuration
 ├─ assets/          # Background art, map images
-└─ license/         # Standalone MIT license view
+├─ license/         # Standalone MIT license view
+├─ .githooks/       # Committed git hooks (commit-msg enforcement)
+└─ scripts/         # Repo setup scripts (setup-hooks.sh)
 ```
+
+## Commit messages
+
+This repo follows [Conventional Commits](https://www.conventionalcommits.org/) (`feat:`, `fix:`, `docs:`, `style:`, `refactor:`, `perf:`, `test:`, `build:`, `ci:`, `chore:`, `revert:`), enforced by a committed `commit-msg` git hook in `.githooks/`.
+
+One-time setup after cloning:
+
+```sh
+./scripts/setup-hooks.sh
+```
+
+This points git at `.githooks` so the hook runs on every commit.
 
 ## Contributing
 
