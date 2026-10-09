@@ -1,9 +1,9 @@
 {
-  "versionInfo": "Updated September 1, 2026 - Patch 4.10.0-LIVE - Server 12545750",
+  "versionInfo": "Updated October 9, 2026 - Patch 4.10.1-LIVE - Server 12684939",
   "serverStartTimes": {
-    "initialOpenTime": "2026-09-01T20:45:18.872Z",
-    "openDurationMs": 3900361,
-    "closeDurationMs": 7200666
+    "initialOpenTime": "2026-09-16T19:05:05.639000Z",
+    "openDurationMs": 3900123,
+    "closeDurationMs": 7200227
   },
   "mapCredits": {
     "checkmate": {
