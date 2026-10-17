@@ -1,7 +1,7 @@
 {
-  "versionInfo": "Updated October 13, 2026 - Patch 4.10.2-LIVE - Server 12881860",
+  "versionInfo": "Updated October 17, 2026 - Patch 4.10.2-LIVE - Server 12913470",
   "serverStartTimes": {
-    "initialOpenTime": "2026-10-10T01:24:26.820000Z",
+    "initialOpenTime": "2026-10-17T15:57:30.419000Z",
     "openDurationMs": 3900123,
     "closeDurationMs": 7200227
   },
